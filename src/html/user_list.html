@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>用户列表</title>
+  <link rel="stylesheet" href="../layui-master/src/css/layui.css">
+  <link rel="stylesheet" type="text/css" href="../css/assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="../css/user_add.css" />
+  <style type="text/css">
+    .layui-table-cell{
+        height:100px;
+        white-space:normal;
+    } 
+    .layui-table-header{
+        height:40px;
+    }  
+  </style>
+</head>
+
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">亚洲第一女团</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="">控制台</a></li>
+                <li class="layui-nav-item"><a href="">商品管理</a></li>    
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户</a>
+                    <dl class="layui-nav-child">
+                      <dd><a href="javascript:;">用户列表</a></dd>
+                      <dd><a href="./user_add.html">添加用户</a></dd>
+                    </dl>
+              </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="../img/center/u80.png" class="layui-nav-img" id="topimg">
+                        <span></span>
+                    </a>
+                    <dl class="layui-nav-child">
+                      <dd><a href="javascript:;">基本资料</a></dd>
+                      <dd><a href="javascript:;">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;" id="exit">退了</a></li>
+            </ul>
+        </div>
+      
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">商品管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./list.html">商品列表</a></dd>
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./order.html">订单列表</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div class="cont_title">
+                <p>首页<span>/</span>用户管理<span>/</span>用户列表</p>
+            </div>
+            <div class="cont_top">
+                <p>
+                    <img src="../img/center/u70.png" alt="" />
+                </p>
+            </div>
+            <div class="cont_bottom clearfix">
+                <div></div>
+                <div class="container-fluid" style="margin-left: 27px;width: 95%;">
+                    <table class="layui-hide" id="test" lay-filter="test"></table>
+                </div>
+            </div>
+            <div class="cont_top">
+                <p>
+                    <img src="../img/center/u70.png" alt="" />
+                </p>
+            </div>
+        </div>
+    </div>
+ 
+    <script type="text/html" id="toolbarDemo">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+        </div>
+    </script>
+ 
+    <script type="text/html" id="barDemo">
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    </script>        
+    <script src="../layui-master/src/layui.js"></script> 
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function(){
+          var element = layui.element;      
+        });
+    </script>        
+    <script src="../layui-master/dist/layui.js" charset="utf-8"></script>
+    <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->  
+    <script>
+        //获取localStorage，改变用户头像
+        let user = localStorage.getItem('user');
+        if(!user){
+          user = {}
+        }else{
+          user = JSON.parse(user);
+          let close = '';
+          let c_id = document.cookie.slice(4);
+          var topimg = document.getElementById('topimg');
+          var uname = topimg.nextElementSibling;
+          var ulist = document.getElementsByClassName('ulist');
+          var uladd = document.getElementsByClassName('uladd');
+          var exit = document.getElementById('exit');
+          // token验证方式
+          if(user.token){
+              // 判断本地是否有token
+              let xhr = new XMLHttpRequest();
+              xhr.onload = ()=>{
+                  let res = JSON.parse(xhr.responseText);
+                 if(res.status == 200){
+                      let img =  user.sign;
+                      let username =  user.username;
+                      close = user.close;
+                      topimg.setAttribute('src', '../img/'+img);
+                      uname.innerHTML = username;     
+                      exit.onclick = function(){
+                        localStorage.removeItem('user');
+                        location.href = './login.html';
+                      }
+                 }
+              }
+              xhr.open('post','/tokenverify',true);
+              xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+              xhr.send('token='+user.token)
+          }
+        }
+
+        layui.use(['table','laytpl'], function(){
+            var table = layui.table;
+            var laytpl = layui.laytpl;
+
+            table.render({
+                elem: '#test'
+                ,url:'/user_list'
+                ,toolbar: '#toolbarDemo'
+                ,title: '用户数据表'
+                ,cols: [[
+                    {type: 'checkbox', fixed: 'left'}
+                    ,{field:'_id', title:'编号', width:80, fixed: 'left', unresize: true}
+                    ,{field:'username', title:'用户名', width:120}
+                    ,{field:'nickname', title:'昵称', width:120}
+                    ,{field:'gender', title:'性别', width:80}
+                    ,{field:'birth', title:'生日', width:120}
+                    ,{field:'email', title:'邮箱', width:150//, templet: function(res){
+                        //return '<em>'+ res.email +'</em>'}
+                    }      
+                    ,{field:'sign', title:'签名', unresize: true,sort: false,//style:'height:100px;',
+                        templet:'<div><img style="height:100px;width:100px;" src="../img/{{d.sign}}"></div>'
+                    }
+                  ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ]]
+                ,page:  { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                  layout: ['prev', 'page', 'next', 'skip','limit', 'count'] //自定义分页布局
+                  ,curr: 1 //设定初始在第 5 页
+                    //,groups: 5 //只显示 1 个连续页码
+                  ,first: false //不显示首页
+                  ,last: false //不显示尾页  
+                }
+            });
+      
+            //头工具栏事件
+            table.on('toolbar(test)', function(obj){
+                var checkStatus = table.checkStatus(obj.config.id);
+                switch(obj.event){
+                  case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                  break;
+                  case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：'+ data.length + ' 个');
+                  break;
+                  case 'isAll':
+                    layer.msg(checkStatus.isAll ? '全选': '未全选');
+                  break;
+                };
+            });
+
+
+            //ajax删除指令
+            function datadel(myid){
+                let xhr = new XMLHttpRequest();    
+                xhr.onload = ()=>{
+                    if(xhr.status == 200){
+                        if(xhr.responseText == "1"){
+                          layer.alert("用户删除成功！");
+                        }
+                    }
+                }
+                xhr.open('post','/user_list',true);
+                xhr.setRequestHeader('Content-Type','application/json');
+                xhr.send(JSON.stringify({"id": myid }));
+            }
+         
+            //监听行工具事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                //console.log(obj)
+                if(obj.event === 'del'){
+                    // console.log(this);
+                    var atr = this.parentNode.parentNode.parentNode;        
+                    var btd = (atr.firstElementChild).nextSibling;//获取a的第一个子节点
+                    var vall = (btd.firstElementChild).innerHTML;
+                    layer.confirm('真的删除行么', function(index){
+                        datadel(vall);
+                        obj.del();
+                        location.reload();
+                        layer.close(index);
+                    });
+                }else if(obj.event === 'edit'){
+                    console.log(data);
+                    location.href = "./user_add.html?_id="+data._id;
+                }                
+            });
+        });
+    </script>
+</body>
+</html>

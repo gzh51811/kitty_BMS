@@ -1,0 +1,51 @@
+.clearfix:after {
+  content: "";
+  display: block;
+  height: 0;
+  clear: both;
+  overflow: hidden;
+  visibility: hidden; }
+
+.cont_title {
+  width: 100%;
+  height: 52px;
+  font-size: 14px;
+  color: #999;
+  padding-left: 20px;
+  line-height: 52px;
+  border-bottom: 2px solid #eee; }
+  .cont_title span {
+    display: inline-block;
+    width: 15px;
+    text-align: center;
+    font-size: 16px; }
+
+.cont_top {
+  padding-top: 35px; }
+  .cont_top p {
+    background: #efefef; }
+
+.cont_bottom {
+  position: relative; }
+  .cont_bottom > div:first-child {
+    height: 106%;
+    width: 22px;
+    top: -15px;
+    background: #efefef;
+    position: absolute; }
+
+.layui-form-item {
+  width: 600px; }
+
+.layui-form-label {
+  width: 109px; }
+
+.layui-unselect.layui-form-select {
+  position: absolute;
+  left: 117px;
+  width: 122px; }
+
+.layui-form-select dl {
+  top: 36px; }
+
+/*# sourceMappingURL=user_list.css.map */

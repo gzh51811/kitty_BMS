@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>添加用户</title>
+  <link rel="stylesheet" href="../layui-master/src/css/layui.css">
+  <link rel="stylesheet" type="text/css" href="../css/assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="../css/user_add.css" />
+  <style type="text/css">
+    .layui-form-switch em {
+      font-size: 16px;
+      line-height: 20px;
+    }
+    .uploadimg{
+      position:relative;
+    }
+    .uploadimg .img_del{
+      position: absolute;
+      border-radius: 50%;
+      display: block;
+      width: 22px;
+      text-align: center;
+      height: 28px;
+      left: 125px;
+      top: 4px;
+      color: #fff;
+      cursor: pointer;
+      z-index: 10;
+      background: red;
+      font-weight: 700;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">亚洲第一女团</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left"> 
+        <li class="layui-nav-item"><a href="">控制台</a></li>
+        <li class="layui-nav-item"><a href="">商品管理</a></li>    
+          <li class="layui-nav-item">
+              <a href="javascript:;">用户</a>
+              <dl class="layui-nav-child">
+                <dd><a href="./user_list.html">用户列表</a></dd>
+                <dd><a href="javascript:;">添加用户</a></dd>
+              </dl>
+        </li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="../img/center/u80.png" class="layui-nav-img" id="topimg">
+            <span></span>
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">基本资料</a></dd>
+            <dd><a href="javascript:;">安全设置</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item"><a href="javascript:;" id="exit">退了</a></li>
+      </ul>
+    </div>
+  
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed">
+            <a class="" href="javascript:;">商品管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="./list.html">商品列表</a></dd>
+              <dd><a href="./addgoods.html">添加商品</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">订单管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="./order.html">订单列表</a></dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div class="cont_title">
+        <p>首页<span>/</span>用户管理<span>/</span>添加用户</p>
+      </div>
+      <div class="cont_top">
+        <p>
+          <img src="../img/center/u70.png" alt="" />
+        </p>
+      </div>
+      <div class="cont_bottom clearfix">
+        <div></div>
+        <div class="container-fluid">
+          <form class="layui-form" action="">
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">用户名</label>
+              <div class="layui-input-block">
+                <input type="text" name="username" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input" id="usn">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">昵称</label>
+              <div class="layui-input-block">
+                <input type="text" name="nickname" lay-verify="required" placeholder="请输入昵称" autocomplete="off" class="layui-input" id="nicn">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">密码</label>
+              <div class="layui-input-block">
+                <input type="password" name="password" lay-verify="pass" autocomplete="off" class="layui-input" id="u_pwd">
+              </div>
+              <div class="layui-form-mid layui-word-aux" style="left: 545px;top: -38px;">请填写6到12位密码</div>
+            </div>
+
+            <div class="layui-form-item" style="margin-top: -20px;margin-bottom: 0;">
+              <label class="layui-form-label">确认密码</label>
+              <div class="layui-input-block">
+                <input type="password" lay-verify="cpass" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux" style="left: 545px;top: -38px;">请再次输入密码</div>
+            </div>
+
+            
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">手机号</label>
+                <div class="layui-input-inline">
+                  <input type="tel" name="phone" lay-verify="required|phone" autocomplete="off" class="layui-input" id="tel">
+                </div>
+              </div>
+
+              <div class="layui-inline">
+                <label class="layui-form-label">性别</label>
+                  <select name="gender" lay-filter="aihao" lay-verify="gender" id="gender">
+                    <option value="请选择">请选择</option>
+                    <option value="男">男</option>
+                    <option value="女">女</option>
+                  </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+              <div class="layui-inline">
+                <label class="layui-form-label">生日</label>
+                <div class="layui-input-inline">
+                  <input type="text" name="birth" id="date" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">管理员</label>
+              <div class="layui-input-block">
+                <input type="checkbox" name="close" lay-skin="switch" lay-text="ON|OFF">
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">邮箱地址</label>
+              <div class="layui-input-block">
+                <input type="email" name="email" lay-verify="email" autocomplete="off" class="layui-input"  id="email">
+              </div>
+            </div>
+
+
+            <div class="layui-upload" style="margin-left:30px;">
+              <button type="button" class="layui-btn" id="imgupload">
+                <i class="layui-icon">&#xe67c;</i>上传图片
+              </button>
+              <div class="layui-upload-list">         
+
+                <img class="layui-upload-img" id="demo1" style="width: 150px;height: 150px;">
+                <p id="demoText"></p>
+              </div>
+            </div>
+
+            <div class="layui-form-item" style="margin-top:30px;">
+              <div class="layui-input-block">
+                <input type="button" class="layui-btn" lay-submit="" lay-filter="demo1" value="确 认" id="yes">
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="cont_top">
+        <p>
+          <img src="../img/center/u70.png" alt="" />
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  <script src="../layui-master/src/layui.js"></script>
+  <script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+      var element = layui.element;      
+    });
+  </script> 
+  <script src="../layui-master/dist/layui.js" charset="utf-8"></script>
+  <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+  <script>
+    var img_sign = '';
+
+    //获取localStorage，改变用户头像
+    let user = localStorage.getItem('user');
+    if(!user){
+      user = {}
+    }else{
+      user = JSON.parse(user);
+      let close = '';
+      let c_id = document.cookie.slice(4);
+      var topimg = document.getElementById('topimg');
+      var uname = topimg.nextElementSibling;
+      var ulist = document.getElementsByClassName('ulist');
+      var uladd = document.getElementsByClassName('uladd');
+      var exit = document.getElementById('exit');
+      // token验证方式
+      if(user.token){
+          // 判断本地是否有token
+          let xhr = new XMLHttpRequest();
+          xhr.onload = ()=>{
+              let res = JSON.parse(xhr.responseText);
+             if(res.status == 200){
+                  let img =  user.sign;
+                  let username =  user.username;
+                  close = user.close;
+                  topimg.setAttribute('src', '../img/'+img);
+                  uname.innerHTML = username;     
+                  exit.onclick = function(){
+                    localStorage.removeItem('user');
+                    location.href = './login.html';
+                  }
+             }
+          }
+          xhr.open('post','/tokenverify',true);
+          xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+          xhr.send('token='+user.token)
+      }
+    }
+
+    if(location.search){
+      var usn = document.getElementById("usn");
+      var nicn = document.getElementById("nicn");
+      var tel = document.getElementById("tel");
+      var email = document.getElementById("email");
+      var demo1 = document.getElementById("demo1");
+      var user_id = location.search.slice(5);
+      // console.log(user_id);
+      let xhr = new XMLHttpRequest();
+      xhr.onload = ()=>{
+        //[{"_id":"5c788e66468b79ffd18291f9","username":"lcq00","nickname":"女团3号","password":"111111","phone":"13400001111","gender":"男","birth":"1996/01/01","email":"1122@11.com","sign":"lcq.jpg","regtime":1551344598440}]
+        var arr = JSON.parse(xhr.responseText);
+        usn.value = arr[0].username;
+        nicn.value = arr[0].nickname;
+        tel.value = arr[0].phone;
+        email.value = arr[0].email;
+        demo1.setAttribute('src', '../img/'+arr[0].sign);
+        img_sign = arr[0].sign;
+      }
+      xhr.open('get',`/user_add?_id=${user_id}`,true);
+      xhr.send();
+    }   
+
+    layui.use('laydate', function(){
+      var laydate = layui.laydate;
+      
+      //执行一个laydate实例
+      laydate.render({
+        elem: '#birth' //指定元素
+      });
+    });
+    
+    //上传图片    
+    layui.use('upload', function(){
+      var $ = layui.jquery
+      ,upload = layui.upload;
+      
+      //普通图片上传
+      var uploadInst = upload.render({
+        elem: '#imgupload'
+        ,url: '/img_add'
+        ,before: function(obj){
+          //预读本地文件示例，不支持ie8
+          obj.preview(function(index, file, result){
+            $('#demo1').attr('src', result); //图片链接（base64）
+            $('#demo1').css('width','150px');
+          });
+        }
+        ,done: function(res){
+          //如果上传失败          
+          img_sign = res.sign;
+          var $img_del = {};
+          $('#demo1').before('<span class="img_del">x</span>');
+          $('#demo1').parent().addClass('uploadimg');
+          $('.img_del').on('click',function(){
+              let xhr = new XMLHttpRequest();
+              xhr.onload = () =>{
+                let res = JSON.parse(xhr.responseText);
+                if(res.code == 200){
+                  $('#demo1').attr('src','');
+                  $('#demo1').css('width','0');
+                  $('.img_del').remove();
+                };
+              }
+              xhr.open('get','/img_add?result=' + img_sign,true);
+              xhr.send();
+            });
+          if(res.code > 0){
+            return layer.msg('上传失败');
+          }
+          //上传成功
+        }
+        ,error: function(){
+          //演示失败状态，并实现重传
+          var demoText = $('#demoText');
+          demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+          demoText.find('.demo-reload').on('click', function(){
+            uploadInst.upload();
+          });
+        }
+      });
+    });
+    layui.use(['form', 'layedit', 'laydate'], function(){
+      var form = layui.form
+      ,layer = layui.layer
+      ,layedit = layui.layedit
+      ,laydate = layui.laydate;
+  
+      //日期
+      laydate.render({
+        elem: '#date'
+      });
+      laydate.render({
+        elem: '#date1'
+      });
+      
+      //创建一个编辑器
+      var editIndex = layedit.build('LAY_demo_editor');
+     
+      //自定义验证规则
+      form.verify({
+        title: function(value){
+          if(value.length < 5){
+            return '用户名至少得5个字符啊';
+          }
+        }
+        ,pass: [
+          /^[\S]{6,12}$/
+          ,'密码必须6到12位，且不能出现空格'
+        ]
+        ,cpass: function(value){
+          var pwd = document.getElementById("u_pwd").value;
+          if(value != pwd){
+            return '两次密码输入不一致';
+          }
+        }
+        ,gender: function(value){
+          if(value == "请选择"){
+            return '性别不能为空';
+          }
+        }
+        ,content: function(value){
+          layedit.sync(editIndex);
+        }
+      });
+    
+
+      //动态追加json数据 
+      function createJson(obj,prop, val) {
+        // 如果 val 被忽略
+        if(typeof val === "undefined") {
+            // 删除属性
+            delete obj[prop];
+        }else {
+            // 添加 或 修改
+            obj[prop] = val;
+        }
+      }  
+
+      //监听提交
+      form.on('submit(demo1)', function(data){
+        // console.log(data.field);
+        createJson(data.field,"sign", img_sign);
+        createJson(data.field,"_id", user_id);
+        if(location.search){
+          createJson(data.field,"m", "aa");
+        }else{
+          createJson(data.field,"m", "");
+        }
+        // {"username":"11111","nickname":"11","password":"111111","phone":"11111111111","gender":"男","birth":"1111/11/11","email":"11@11.com"}
+        // 发起ajax请求
+        let xhr = new XMLHttpRequest();
+        xhr.onload = ()=>{
+            if(xhr.status == 200){
+                if(xhr.responseText == "yes"){
+                  layer.alert("用户添加/修改成功！");
+                  setTimeout(function(){
+                      location.href = './user_list.html';
+                  }, 2000)                  
+                }
+            }
+        }
+        xhr.open('post','/user_add',true);
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.send(JSON.stringify(data.field));
+        return false;
+      });
+    });
+  </script>
+</body>
+</html>

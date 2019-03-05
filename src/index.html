@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>首页</title>
+  <link rel="stylesheet" href="layui-master/src/css/layui.css">
+</head>
+<body class="layui-layout-body">
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+      <div class="layui-logo">亚洲第一女团</div>
+      <!-- 头部区域（可配合layui已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <li class="layui-nav-item"><a href="javascript:;">控制台</a></li>
+        <li class="layui-nav-item"><a href="javascript:;">商品管理</a></li>    
+          <li class="layui-nav-item">
+              <a href="javascript:;">用户</a>
+              <dl class="layui-nav-child">
+                <dd><a href="javascript:;" class="ulist">用户列表</a></dd>
+                <dd><a href="javascript:;" class="uladd">添加用户</a></dd>
+              </dl>
+        </li>
+      </ul>
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a href="javascript:;">
+            <img src="./img/center/u80.png" class="layui-nav-img" id="topimg">
+            <span></span>
+          </a>
+          <dl class="layui-nav-child">
+            <dd><a href="javascript:;">基本资料</a></dd>
+            <dd><a href="javascript:;">安全设置</a></dd>
+          </dl>
+        </li>
+        <li class="layui-nav-item"><a href="javascript:;" id="exit">退了</a></li>
+      </ul>
+    </div>
+    
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+          <li class="layui-nav-item layui-nav-itemed">
+            <a class="" href="javascript:;">商品管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;">商品列表</a></dd>
+              <dd><a href="javascript:;">添加商品</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">订单管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;">订单列表</a></dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      <div style="padding: 15px;">
+          <img src="img/indexjpg.jpg" alt="" />
+      </div>
+    </div>
+    
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      © layui.com - 底部固定区域
+    </div>
+  </div>
+
+  <script src="layui-master/src/layui.js"></script>
+  <script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+      var element = layui.element;      
+    });
+
+    //获取localStorage，改变用户头像
+    let user = localStorage.getItem('user');
+    if(!user){
+      user = {}
+    }else{
+      user = JSON.parse(user);
+      let close = '';
+      let c_id = document.cookie.slice(4);
+      var topimg = document.getElementById('topimg');
+      var uname = topimg.nextElementSibling;
+      var ulist = document.getElementsByClassName('ulist');
+      var uladd = document.getElementsByClassName('uladd');
+      var exit = document.getElementById('exit');
+      // token验证方式
+      if(user.token){
+          // 判断本地是否有token
+          let xhr = new XMLHttpRequest();
+          xhr.onload = ()=>{
+              let res = JSON.parse(xhr.responseText);
+             if(res.status == 200){
+                  let img =  user.sign;
+                  let username =  user.username;
+                  close = user.close;
+                  topimg.setAttribute('src', './img/'+img);
+                  uname.innerHTML = username;
+                  document.onclick =function(e){
+                    if(e.target.className == 'ulist'){
+                      console.log(111);
+                      if(close == 'on'){
+                        location.href = './html/user_list.html';
+                      }else{
+                        alert('您没有权限查看这个信息！')
+                      }
+                    }else if(e.target.className == 'uladd'){
+                      if(close == 'on'){
+                        location.href = './html/user_add.html';
+                      }else{
+                        alert('您没有权限查看这个信息！')
+                      }
+                    }
+                  }      
+                  exit.onclick = function(){
+                    localStorage.removeItem('user');
+                    location.href = './html/login.html';
+                  }
+             }
+          }
+          xhr.open('post','/tokenverify',true);
+          xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+          xhr.send('token='+user.token)
+      }
+    }        
+  </script>
+</body>
+</html>

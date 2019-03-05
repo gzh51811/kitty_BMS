@@ -2,7 +2,7 @@ const Koa = require('koa');
 const static = require('koa-static');
 
 // 路由
-const routers = require('./routers');
+const routers = require('./js/routers');
 
 // 创建koa应用
 const app = new Koa();//app.context
@@ -15,7 +15,8 @@ app.use(static('./'));
 app.use(routers.allowedMethods());
 app.use(routers.routes());
 
+
 // 监听端口
-app.listen(3001, () => {
+app.listen(3001,()=>{
     console.log('server is running on http://localhost:3001');
 })

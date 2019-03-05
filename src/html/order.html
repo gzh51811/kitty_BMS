@@ -16,7 +16,7 @@
 <body class="layui-layout-body">
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
+            <div class="layui-logo">亚洲第一女团</div>
             <!-- 头部区域（可配合layui已有的水平导航） -->
             <ul class="layui-nav layui-layout-left">
                 <li class="layui-nav-item"><a href="">控制台</a></li>
@@ -32,15 +32,15 @@
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                        贤心
+                        <img src="../img/center/u80.png" class="layui-nav-img" id="topimg">
+                        <span></span>
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">基本资料</a></dd>
                         <dd><a href="javascript:;">安全设置</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;">退了</a></li>
+                <li class="layui-nav-item"><a href="javascript:;"  id="exit">退了</a></li>
             </ul>
         </div>
 
@@ -91,11 +91,42 @@
             <!-- "LAY_CHECKED": true 是否选中 -->
             <script>
 
-
-
-
-
-
+                //获取localStorage，改变用户头像
+                let user = localStorage.getItem('user');
+                if(!user){
+                  user = {}
+                }else{
+                  user = JSON.parse(user);
+                  let close = '';
+                  let c_id = document.cookie.slice(4);
+                  var topimg = document.getElementById('topimg');
+                  var uname = topimg.nextElementSibling;
+                  var ulist = document.getElementsByClassName('ulist');
+                  var uladd = document.getElementsByClassName('uladd');
+                  var exit = document.getElementById('exit');
+                  // token验证方式
+                  if(user.token){
+                      // 判断本地是否有token
+                      let xhr = new XMLHttpRequest();
+                      xhr.onload = ()=>{
+                          let res = JSON.parse(xhr.responseText);
+                         if(res.status == 200){
+                              let img =  user.sign;
+                              let username =  user.username;
+                              close = user.close;
+                              topimg.setAttribute('src', '../img/'+img);
+                              uname.innerHTML = username;     
+                              exit.onclick = function(){
+                                localStorage.removeItem('user');
+                                location.href = './login.html';
+                              }
+                         }
+                      }
+                      xhr.open('post','/tokenverify',true);
+                      xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+                      xhr.send('token='+user.token)
+                  }
+                }
 
 
                 layui.use('table', function () {
