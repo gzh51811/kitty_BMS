@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>订单管理</title>
+    <link rel="stylesheet" href="../layui-master/dist/css/layui.css">
+    <style>
+        .layui-table-header {
+            height: 40px;
+        }
+    </style>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">layui 后台布局</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="">控制台</a></li>
+                <li class="layui-nav-item"><a href="">商品管理</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">用户列表</a></dd>
+                        <dd><a href="">用户管理</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                        贤心
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">基本资料</a></dd>
+                        <dd><a href="javascript:;">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">退了</a></li>
+            </ul>
+        </div>
+
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">商品管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./list.html">商品列表</a></dd>
+
+                            <dd><a href="./addgoods.html">添加商品</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">订单管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="./list.html">订单列表</a></dd>
+                        </dl>
+                    </li>
+                    <!--         <li class="layui-nav-item"><a href="javascript:;">云市场</a></li>
+        <li class="layui-nav-item"><a href="javascript:;">发布商品</a></li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <table class="layui-hide" id="test" lay-filter="test"></table>
+
+            <script type="text/html" id="toolbarDemo">
+                <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+                </div>
+            </script>
+
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+            </script>
+
+
+            <script src="../layui-master/dist/layui.js" charset="utf-8"></script>
+            <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+            <!-- "LAY_CHECKED": true 是否选中 -->
+            <script>
+
+
+
+
+
+
+
+
+                layui.use('table', function () {
+                    var table = layui.table;
+
+                    table.render({
+                        elem: '#test'
+                        , url: "/order"
+                        , toolbar: '#toolbarDemo'
+                        , title: '用户数据表'
+                        , cols: [[
+                            { type: 'checkbox', fixed: 'left' }
+                            , { field: '_id', title: '订单号', width: 110 }
+                            , { field: 'goods', title: '商品', width: 120 }
+                            , { field: 'price', title: '单价', width: 120 }
+                            , { field: 'count', title: '数量', width: 120 }
+                            , { field: 'total', title: '订单总价', width: 120 }
+                            , {
+                                field: 'status1', title: '支付状态', width: 120, templet: function (res) {
+                                    return `<div data-id="${res._id}" data-field="status1" style="width:100%,height:100%;">${res.status1}</div>`
+                                }
+                            }
+                            , {
+                                field: 'status2', title: '物流状态', width: 120, templet: function (res) {
+                                    return `<div data-id="${res._id}" data-field="status2" style="width:100%,height:100%;">${res.status2}</div>`
+                                }
+                            }
+                            , {
+                                field: 'status3', title: '订单状态', width: 120, templet: function (res) {
+                                    return `<div data-id="${res._id}" data-field="status3" style="width:100%,height:100%;">${res.status3}</div>`
+                                }
+                            }
+                            , { field: 'joinTime', title: '加入时间', width: 120 }
+
+                        ]]
+                        , page: true
+                    });
+                    var layuitable = document.getElementsByClassName('layui-table')[1]
+
+                    layuitable.onclick = function (e) {
+                        // console.log(e.target.dataset.field)
+
+                        if (e.target.dataset.field == "status1") {
+                            if (e.target.innerHTML == "未支付") {
+                                if (confirm("是否修改为已支付")) {
+
+                                    e.target.innerHTML = '已支付';
+                                    e.target.parentNode.parentNode.nextElementSibling.children[0].children[0].innerHTML = "未发货";
+
+                                    e.target.parentNode.parentNode.nextElementSibling.nextElementSibling.children[0].children[0].innerHTML = "订单未完成";
+                                    checkStatus(e.target.dataset.id, e.target.dataset.field, e.target.innerHTML);
+                                }
+                            } else if (e.target.innerHTML == "已支付") {
+                                if (confirm("是否修改为未支付")) {
+
+                                    e.target.innerHTML = '未支付';
+                                    e.target.parentNode.parentNode.nextElementSibling.children[0].children[0].innerHTML = "未发货";
+                                    e.target.parentNode.parentNode.nextElementSibling.nextElementSibling.children[0].children[0].innerHTML = "订单未完成";
+                                    checkStatus(e.target.dataset.id, e.target.dataset.field, e.target.innerHTML);
+                                }
+                            }
+
+                        } else if (e.target.dataset.field == "status2") {
+                            if (e.target.innerHTML == "未发货") {
+                                if (confirm("是否修改为已发货")) {
+                                    e.target.innerHTML = '已发货';
+                                    e.target.parentNode.parentNode.previousElementSibling.children[0].children[0].innerHTML = "已支付";
+                                    e.target.parentNode.parentNode.nextElementSibling.children[0].children[0].innerHTML = "订单未完成";
+                                    checkStatus(e.target.dataset.id, e.target.dataset.field, e.target.innerHTML);
+                                }
+                            } else if (e.target.innerHTML == "已发货") {
+                                if (confirm("是否修改为未发货")) {
+                                    e.target.innerHTML = '未发货';
+                                    e.target.parentNode.parentNode.previousElementSibling.children[0].children[0].innerHTML = "已支付";
+                                    e.target.parentNode.parentNode.nextElementSibling.children[0].children[0].innerHTML = "订单未完成";
+                                    checkStatus(e.target.dataset.id, e.target.dataset.field, e.target.innerHTML);
+                                }
+                            }
+
+
+                        } else if (e.target.dataset.field == "status3") {
+                            if (e.target.innerHTML == "订单未完成") {
+                                if (confirm("是否修改为订单已完成")) {
+                                    e.target.innerHTML = '订单已完成';
+                                    e.target.parentNode.parentNode.previousElementSibling.children[0].children[0].innerHTML = "已发货";
+                                    e.target.parentNode.parentNode.previousElementSibling.previousElementSibling.children[0].children[0].innerHTML = "已支付";
+                                    checkStatus(e.target.dataset.id, e.target.dataset.field, e.target.innerHTML);
+                                }
+                            } else if (e.target.innerHTML == "订单已完成") {
+                                if (confirm("是否修改为订单未完成")) {
+                                    e.target.innerHTML = '订单未完成';
+                                    e.target.parentNode.parentNode.previousElementSibling.children[0].children[0].innerHTML = "已发货";
+                                    e.target.parentNode.parentNode.previousElementSibling.previousElementSibling.children[0].children[0].innerHTML = "已支付";
+                                    checkStatus(e.target.dataset.id, e.target.dataset.field, e.target.innerHTML);
+                                }
+                            }
+
+                        }
+                        // if (e.target.className)
+                    }
+                    function checkStatus(_id, field, newfield) {
+                        let xhr = new XMLHttpRequest();
+
+                        xhr.open('post', '/order', true);
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                        var res = `id=${_id}&field=${field}&newfield=${newfield}`;
+                        xhr.send(res);
+                    }
+
+
+                    //头工具栏事件
+                    table.on('toolbar(test)', function (obj) {
+                        var checkStatus = table.checkStatus(obj.config.id);
+                        switch (obj.event) {
+                            case 'getCheckData':
+                                var data = checkStatus.data;
+                                layer.alert(JSON.stringify(data));
+                                break;
+                            case 'getCheckLength':
+                                var data = checkStatus.data;
+                                layer.msg('选中了：' + data.length + ' 个');
+                                break;
+                            case 'isAll':
+                                layer.msg(checkStatus.isAll ? '全选' : '未全选');
+                                break;
+                        };
+                    });
+                    // table.on('edit(test)', function (obj) { //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+                    //     console.log(obj.value); //得到修改后的值
+                    //     console.log(obj.field); //当前编辑的字段名
+                    //     console.log(obj.data); //所在行的所有相关数据  
+                    // });
+                    //监听行工具事件
+                    // table.on('tool(test)', function (obj) {
+                    //     var data = obj.data;
+                    //     // console.log(data)
+                    //     console.log(obj.event)
+                    //     if (obj.event === 'del') {
+
+                    //     } else if (obj.event === 'edit') {
+
+                    //     }
+                    // });
+                });
+            </script>
+        </div>
+
+
+    </div>
+    <script src="../layui-master/test/layui.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use('element', function () {
+            var element = layui.element;
+
+        });
+    </script>
+</body>
+
+</html>
