@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>首页</title>
+  <title>后台首页</title>
   <link rel="stylesheet" href="../layui-master/src/css/layui.css">
 </head>
 <body class="layui-layout-body">
@@ -44,14 +44,14 @@
           <li class="layui-nav-item layui-nav-itemed">
             <a class="" href="javascript:;">商品管理</a>
             <dl class="layui-nav-child">
-              <dd><a href="javascript:;">商品列表</a></dd>
-              <dd><a href="javascript:;">添加商品</a></dd>
+              <dd><a href="./list.html">商品列表</a></dd>
+              <dd><a href="./addgoods.html">添加商品</a></dd>
             </dl>
           </li>
           <li class="layui-nav-item">
             <a href="javascript:;">订单管理</a>
             <dl class="layui-nav-child">
-              <dd><a href="javascript:;">订单列表</a></dd>
+              <dd><a href="./order.html">订单列表</a></dd>
             </dl>
           </li>
         </ul>
@@ -105,7 +105,7 @@
                   uname.innerHTML = username;
                   document.onclick =function(e){
                     if(e.target.className == 'ulist'){
-                      console.log(111);
+                      // console.log(111);
                       if(close == 'on'){
                         location.href = './user_list.html';
                       }else{
@@ -121,7 +121,7 @@
                   }      
                   exit.onclick = function(){
                     localStorage.removeItem('user');
-                    location.href = './login.html';
+                    location.href = '../index.html';
                   }
              }
           }

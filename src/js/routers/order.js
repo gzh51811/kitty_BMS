@@ -32,11 +32,11 @@ router.post('/', async (ctx, next) => {
 
     var oid = mongoose.Types.ObjectId(id);
     if (field == "status1") {
-        let res = await db.update('order', { "_id": oid }, { $set: { "status1": newfield, "status2": "未发货", "status3": "订单未完成" } });
+        var res = await db.update('order', { "_id": oid }, { $set: { "status1": newfield, "status2": "未发货", "status3": "订单未完成" } });
     } else if (field == "status2") {
-        let res = await db.update('order', { "_id": oid }, { $set: { "status1": "已支付", "status2": newfield, "status3": "订单未完成" } });
+        res = await db.update('order', { "_id": oid }, { $set: { "status1": "已支付", "status2": newfield, "status3": "订单未完成" } });
     } else if (field == "status3") {
-        let res = await db.update('order', { "_id": oid }, { $set: { "status1": "已支付", "status2": "已发货", "status3": newfield } });
+        res = await db.update('order', { "_id": oid }, { $set: { "status1": "已支付", "status2": "已发货", "status3": newfield } });
     }
 
     // console.log(res)

@@ -70,16 +70,16 @@
 <body class="layui-layout-body">
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header">
-            <div class="layui-logo">亚洲第一女团</div>
+            <div class="layui-logo"><a href="./index.html" style="color:#009688;text-decoration:none;">亚洲第一女团</a></div>
             <!-- 头部区域（可配合layui已有的水平导航） -->
             <ul class="layui-nav layui-layout-left">
-                <li class="layui-nav-item"><a href="">控制台</a></li>
-                <li class="layui-nav-item"><a href="">商品管理</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">控制台</a></li>
+                <li class="layui-nav-item"><a href="javascript:;">商品管理</a></li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">用户</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="">用户列表</a></dd>
-                        <dd><a href="">用户管理</a></dd>
+                        <dd><a href="javascript:;" class="ulist">用户列表</a></dd>
+                        <dd><a href="javascript:;" class="uladd">用户管理</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -240,11 +240,26 @@
                                   let img =  user.sign;
                                   let username =  user.username;
                                   close = user.close;
+                                  document.onclick =function(e){
+                                    if(e.target.className == 'ulist'){
+                                      if(close == 'on'){
+                                        location.href = './user_list.html';
+                                      }else{
+                                        alert('您没有权限查看这个信息！')
+                                      }
+                                    }else if(e.target.className == 'uladd'){
+                                      if(close == 'on'){
+                                        location.href = './user_add.html';
+                                      }else{
+                                        alert('您没有权限查看这个信息！')
+                                      }
+                                    }
+                                }  
                                   topimg.setAttribute('src', '../img/'+img);
                                   uname.innerHTML = username;     
                                   exit.onclick = function(){
                                     localStorage.removeItem('user');
-                                    location.href = './login.html';
+                                    location.href = '../index.html';
                                   }
                              }
                           }
